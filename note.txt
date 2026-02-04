@@ -1,0 +1,143 @@
+// 1. users (table par défaut Laravel)
+- id
+- name
+- email
+- email_verified_at
+- password
+- profile_photo
+- bio
+- role (enum: 'recruiter', 'job_seeker')
+- timestamps
+
+// 2. profiles (One-to-One avec users - pour les chercheurs d'emploi)
+- id
+- user_id (FK)
+- title (ex: "Développeur Fullstack")
+- specialty
+- timestamps
+
+// 3. educations (One-to-Many avec profiles)
+- id
+- profile_id (FK)
+- degree
+- school
+- year_obtained
+- timestamps
+
+// 4. experiences (One-to-Many avec profiles)
+- id
+- profile_id (FK)
+- position
+- company
+- duration
+- timestamps
+
+// 5. skills (Many-to-Many avec profiles)
+- id
+- name
+- timestamps
+
+// 6. profile_skill (table pivot)
+- id
+- profile_id (FK)
+- skill_id (FK)
+- timestamps
+
+// 7. job_offers (One-to-Many avec users - recruteurs)
+- id
+- user_id (FK) // recruteur
+- company_name
+- title
+- description
+- contract_type (enum: 'CDI', 'CDD', 'Full-time', 'Stage', 'Freelance')
+- image
+- status (enum: 'open', 'closed')
+- timestamps
+
+// 8. applications (Many-to-Many entre users et job_offers)
+- id
+- user_id (FK) // candidat
+- job_offer_id (FK)
+- status (enum: 'pending', 'reviewed', 'accepted', 'rejected')
+- timestamps
+
+// 9. friendships (Many-to-Many auto-référencée sur users)
+- id
+- user_id (FK) // celui qui envoie
+- friend_id (FK) // celui qui reçoit
+- status (enum: 'pending', 'accepted', 'rejected')
+- timestamps
+-----------------------------
+-----------------------------
+-----------------------------
+
+-----------------------------
+-----------------------------
+-----------------------------
+Contexte du projet
+Une entreprise souhaite créer une plateforme web permettant de connecter des recruteurs et des chercheurs d’emploi.
+
+Selon les besoins du projet, la plateforme sera développée avec Laravel, en respectant les bonnes pratiques de développement.
+
+Objectifs
+Utiliser Laravel
+Mettre en place une authentification sécurisée
+Gérer des profils utilisateurs
+Implémenter une recherche simple
+Préparer le projet pour des évolutions futures
+Fonctionnalités principales
+Authentification
+
+Inscription et connexion sécurisées (Laravel Breeze ou Jetstream)
+Deux types d’utilisateurs : Recruteur (entreprise), Chercheur d’emploi (spécialité)
+Profil utilisateur
+
+Consulter et modifier son profil ( Modifier la photo et la bio, nom ...)
+Changer le mot de passe avec vérification de l’ancien
+Recherche
+
+Rechercher un utilisateur par : Nom, Spécialité
+Consulter le profil d’un utilisateur
+
+
+Fonctionnalités – Chercheur d’emploi
+1 - Gestion d’un profil candidat sous forme de CV :
+
+Titre du profil ex: Développeur Fullstack, Comptable Senior...).
+Formation : Diplômes, écoles, années d'obtention.
+Expériences : Postes précédents, entreprises et durées
+Compétences : (ex: Laravel, Gestion de projet, Anglais).
+2 - Recherche d’offres d’emploi selon le métier
+
+3 - Consultation du détail d’une offre
+
+4 - Postulation à une offre d’emploi
+
+5 - Ajout d’amis et Accepter / refuser une demande d’amitié
+
+
+
+Fonctionnalités – Employeur
+1 - Création et gestion des offres d’emploi :
+
+Entreprise
+Type de contrat (CDI, CDD, Full-time, Stage, Freelance...).
+Titre, description, et une image avec le poste ( obligatoire )
+2 - Consultation des candidatures reçues
+
+3 - Clôturer une offre lorsque le recrutement est terminé
+
+
+
+Contraintes et Stack Technique
+1 - Gestion des Rôles et Permissions :
+
+Intégration du package Spatie Laravel.
+Définition stricte des accès : Seuls les recruteurs peuvent créer des offres ; seuls les candidats peuvent postuler.
+2 - Interactivité et Performance (Livewire) :
+
+Utilisation de Laravel Livewire pour fluidifier l'interface sans rechargement de page.
+Mise en place du Lazy Loading (listes des offres d'emploi)
+3 - Mise en place des relations Eloquent : One to One, One to Many, Many to Many, Gestion des clés étrangères et des relations dans les modèles
+
+4 - Utilisation des migrations, seeders et factories
