@@ -26,6 +26,7 @@ class SkillController extends Controller
             'name' => $validated['skill_name']
         ]);
 
+        // ->syncWithoutDetaching($skill->id)
         if (!Auth::user()->profile->skills->contains($skill->id)) {
             Auth::user()->profile->skills()->attach($skill->id);
 

@@ -13,6 +13,7 @@ class ExperienceController extends Controller
      */
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'position' => 'required|string|max:255',
             'company' => 'required|string|max:255',
@@ -33,15 +34,9 @@ class ExperienceController extends Controller
             ->with('success', 'Expérience ajoutée avec succès!');
     }
 
-    /**
-     * Mettre à jour une expérience
-     */
     public function update(Request $request, Experience $experience)
     {
-        // Vérifier que l'expérience appartient à l'utilisateur
-        if ($experience->profile->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $this->authorize('update', $experience);
 
         $validated = $request->validate([
             'position' => 'required|string|max:255',
@@ -55,15 +50,10 @@ class ExperienceController extends Controller
             ->with('success', 'Expérience mise à jour avec succès!');
     }
 
-    /**
-     * Supprimer une expérience
-     */
+
     public function destroy(Experience $experience)
     {
-        // Vérifier que l'expérience appartient à l'utilisateur
-        if ($experience->profile->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $this->authorize('delete', $experience);
 
         $experience->delete();
 
