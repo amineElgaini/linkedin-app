@@ -58,4 +58,5 @@ class Application extends Model
     {
         return $query->where('status', 'rejected');
     }
+    
 }

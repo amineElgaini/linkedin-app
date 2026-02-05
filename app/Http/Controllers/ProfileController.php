@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profile;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -85,18 +86,16 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
-    /**
-     * Afficher le profil public d'un utilisateur
-     */
-    public function showPublic($id)
+    public function showPublic(User $user)
     {
-        $user = User::with([
+        // Charger les relations nécessaires
+        $user->load([
             'profile.educations',
             'profile.experiences',
             'profile.skills'
-        ])->findOrFail($id);
+        ]);
 
-        return view('profile.public', compact('user'));
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -117,7 +116,7 @@ class ProfileController extends Controller
                     $query->where('specialty', 'like', "%{$specialty}%");
                 });
             })
-            ->with('profile')
+            ->with(['profile.skills', 'profile.experiences'])
             ->paginate(12);
 
         return view('users.search', compact('users', 'query', 'specialty'));

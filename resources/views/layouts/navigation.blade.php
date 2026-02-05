@@ -32,32 +32,33 @@
                 <!-- Navigation Links -->
                 <div class="hidden lg:flex items-center space-x-1">
                     <!-- Profile Details Link -->
-<a href="{{ route('profile.show') }}"
-    class="flex flex-col items-center px-3 py-2 text-xs font-medium transition {{ request()->routeIs('profile.show') ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900' }}">
-    <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-            d="M5.121 17.804A9 9 0 1112 21a9 9 0 01-6.879-3.196zM15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-    </svg>
-    <span>Profil</span>
-</a>
-
-                    <a href="{{ route('dashboard') }}"
-                        class="flex flex-col items-center px-3 py-2 text-xs font-medium transition {{ request()->routeIs('dashboard') ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900' }}">
+                    <a href="{{ route('profile.show') }}"
+                        class="flex flex-col items-center px-3 py-2 text-xs font-medium transition {{ request()->routeIs('profile.show') ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900' }}">
                         <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5.121 17.804A9 9 0 1112 21a9 9 0 01-6.879-3.196zM15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
-                        <span>Accueil</span>
+                        <span>Profil</span>
                     </a>
 
                     <a href="{{ route('job-offers.index') }}"
-                        class="flex flex-col items-center px-3 py-2 text-xs font-medium transition {{ request()->routeIs('job-offers.*') ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900' }}">
+                        class="flex flex-col items-center px-3 py-2 text-xs font-medium transition {{ request()->routeIs('job-offers.index') ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900' }}">
                         <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
-                        <span>Emplois</span>
+                        <span>Offres</span>
                     </a>
 
-                    @if(Auth::user()->role === 'job_seeker')
+
+                    <a href="{{ route('users.search') }}"
+                        class="flex flex-col items-center px-3 py-2 text-xs font-medium transition {{ request()->routeIs('users.search') ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900' }}">
+                        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <span>Rechercher</span>
+                    </a>
+
                     <a href="{{ route('friends.index') }}"
                         class="flex flex-col items-center px-3 py-2 text-xs font-medium transition {{ request()->routeIs('friends.*') ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900' }}">
                         <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,15 +66,6 @@
                         </svg>
                         <span>Réseau</span>
                     </a>
-
-                    <a href="{{ route('applications.my') }}"
-                        class="flex flex-col items-center px-3 py-2 text-xs font-medium transition {{ request()->routeIs('applications.my') ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900' }}">
-                        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        <span>Candidatures</span>
-                    </a>
-                    @endif
 
                     @if(Auth::user()->role === 'recruiter')
                     <a href="{{ route('job-offers.create') }}"
@@ -92,7 +84,7 @@
                         <span>Candidatures</span>
                     </a>
                     @endif
-                    
+
                 </div>
             </div>
 
@@ -179,7 +171,7 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
-                
+
             </div>
 
             <!-- Hamburger (Mobile) -->
@@ -213,23 +205,35 @@
         <!-- Navigation Links (Mobile) -->
         <div class="px-2 pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('profile.show')" :active="request()->routeIs('profile.show')">
-    <div class="flex items-center space-x-3">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M5.121 17.804A9 9 0 1112 21a9 9 0 01-6.879-3.196zM15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-        <span>{{ __('Profil') }}</span>
-    </div>
-</x-responsive-nav-link>
+                <div class="flex items-center space-x-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5.121 17.804A9 9 0 1112 21a9 9 0 01-6.879-3.196zM15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>{{ __('Profil') }}</span>
+                </div>
+            </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="route('users.search')" :active="request()->routeIs('users.search')">
+                <div class="flex items-center space-x-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <span>{{ __('Rechercher') }}</span>
+                </div>
+            </x-responsive-nav-link>
+
+            <!-- <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
                 <div class="flex items-center space-x-3">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                     <span>{{ __('Accueil') }}</span>
                 </div>
-            </x-responsive-nav-link>
+            </x-responsive-nav-link> -->
+
+                                @if(Auth::user()->role === 'job_seeker')
 
             <x-responsive-nav-link :href="route('job-offers.index')" :active="request()->routeIs('job-offers.*')">
                 <div class="flex items-center space-x-3">
@@ -239,6 +243,7 @@
                     <span>{{ __('Emplois') }}</span>
                 </div>
             </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- User Info (Mobile) -->

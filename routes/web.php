@@ -7,21 +7,25 @@ use App\Http\Controllers\SkillController;
 use App\Http\Controllers\JobOfferController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\FriendshipController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // Page d'accueil
 Route::get('/', function () {
-    return redirect()->route('dashboard');
-});
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
+    if (Auth::user()->role === 'job_seeker') {
+        return redirect()->route('job-offers.index');
+    } else if (Auth::user()->role === 'recruiter') {
+        return redirect()->route('applications.index');
+    }
+})->name('home');
 
 // Dashboard
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return redirect()->route('home');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
-// Routes publiques - Offres d'emploi
-Route::get('/job-offers', [JobOfferController::class, 'index'])->name('job-offers.index');
-Route::get('/job-offers/{jobOffer}', [JobOfferController::class, 'show'])->name('job-offers.show');
 
 // Routes authentifiées
 Route::middleware('auth')->group(function () {
@@ -33,7 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+
     // Profils publics et recherche
     Route::get('/search', [ProfileController::class, 'search'])->name('users.search');
     Route::get('/users/{user}', [ProfileController::class, 'showPublic'])->name('users.show');
@@ -65,8 +69,8 @@ Route::middleware('auth')->group(function () {
         // Gestion des offres
         Route::get('/job-offers/create', [JobOfferController::class, 'create'])->name('job-offers.create');
         Route::post('/job-offers', [JobOfferController::class, 'store'])->name('job-offers.store');
-        Route::get('/job-offers/{jobOffer}/edit', [JobOfferController::class, 'edit'])->name('job-offers.edit');
-        Route::put('/job-offers/{jobOffer}', [JobOfferController::class, 'update'])->name('job-offers.update');
+        // Route::get('/job-offers/{jobOffer}/edit', [JobOfferController::class, 'edit'])->name('job-offers.edit');
+        // Route::put('/job-offers/{jobOffer}', [JobOfferController::class, 'update'])->name('job-offers.update');
         Route::delete('/job-offers/{jobOffer}', [JobOfferController::class, 'destroy'])->name('job-offers.destroy');
         Route::patch('/job-offers/{jobOffer}/close', [JobOfferController::class, 'close'])->name('job-offers.close');
         
@@ -75,23 +79,28 @@ Route::middleware('auth')->group(function () {
         Route::patch('/applications/{application}/status', [ApplicationController::class, 'updateStatus'])->name('applications.update-status');
     });
     
+    Route::middleware('role:job_seeker,recruiter')->group(function () {
+        Route::get('/job-offers', [JobOfferController::class, 'index'])->name('job-offers.index');
+    });
+    
     // ==========================================
     // ROUTES CHERCHEUR D'EMPLOI
     // ==========================================
-    Route::middleware('role:job_seeker')->group(function () {
+    // Route::middleware('role:job_seeker')->group(function () {
         // Candidatures
+        
         Route::post('/job-offers/{jobOffer}/apply', [ApplicationController::class, 'apply'])->name('applications.apply');
         Route::get('/my-applications', [ApplicationController::class, 'myApplications'])->name('applications.my');
-        Route::delete('/applications/{application}', [ApplicationController::class, 'withdraw'])->name('applications.withdraw');
         
         // Gestion des amitiés
         Route::post('/friends/{user}/request', [FriendshipController::class, 'sendRequest'])->name('friends.request');
         Route::post('/friends/{friendship}/accept', [FriendshipController::class, 'accept'])->name('friends.accept');
         Route::post('/friends/{friendship}/reject', [FriendshipController::class, 'reject'])->name('friends.reject');
         Route::delete('/friends/{friendship}', [FriendshipController::class, 'remove'])->name('friends.remove');
+        
         Route::get('/friends', [FriendshipController::class, 'index'])->name('friends.index');
-        Route::get('/friends/requests', [FriendshipController::class, 'requests'])->name('friends.requests');
-    });
+        // Route::get('/friends/requests', [FriendshipController::class, 'requests'])->name('friends.requests');
+    // });
 });
 
 require __DIR__.'/auth.php';
