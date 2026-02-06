@@ -78,26 +78,26 @@ Route::middleware('auth')->group(function () {
         Route::get('/applications', [ApplicationController::class, 'index'])->name('applications.index');
         Route::patch('/applications/{application}/status', [ApplicationController::class, 'updateStatus'])->name('applications.update-status');
     });
-    
+
     Route::middleware('role:job_seeker,recruiter')->group(function () {
         Route::get('/job-offers', [JobOfferController::class, 'index'])->name('job-offers.index');
     });
-    
+
     // ==========================================
     // ROUTES CHERCHEUR D'EMPLOI
     // ==========================================
     // Route::middleware('role:job_seeker')->group(function () {
         // Candidatures
-        
+
         Route::post('/job-offers/{jobOffer}/apply', [ApplicationController::class, 'apply'])->name('applications.apply');
         Route::get('/my-applications', [ApplicationController::class, 'myApplications'])->name('applications.my');
-        
+
         // Gestion des amitiés
         Route::post('/friends/{user}/request', [FriendshipController::class, 'sendRequest'])->name('friends.request');
         Route::post('/friends/{friendship}/accept', [FriendshipController::class, 'accept'])->name('friends.accept');
         Route::post('/friends/{friendship}/reject', [FriendshipController::class, 'reject'])->name('friends.reject');
         Route::delete('/friends/{friendship}', [FriendshipController::class, 'remove'])->name('friends.remove');
-        
+
         Route::get('/friends', [FriendshipController::class, 'index'])->name('friends.index');
         // Route::get('/friends/requests', [FriendshipController::class, 'requests'])->name('friends.requests');
     // });

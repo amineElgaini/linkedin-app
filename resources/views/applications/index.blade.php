@@ -27,7 +27,12 @@
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center">
                                                     @if($application->user->profile_photo)
-                                                        <img class="h-10 w-10 rounded-full object-cover mr-3" src="{{ $application->user->profile_photo }}" alt="{{ $application->user->name }}">
+                                                        <!-- <img class="h-10 w-10 rounded-full object-cover mr-3" src="{{ $application->user->profile_photo }}" alt="{{ $application->user->name }}"> -->
+                                                         <img class="h-10 w-10 rounded-full object-cover mr-3" 
+    src="{{ $application->user->profile_photo 
+        ? asset('storage/' . $application->user->profile_photo) 
+        : 'https://ui-avatars.com/api/?name=' . urlencode($application->user->name) . '&background=3B82F6&color=fff' }}" 
+    alt="{{ $application->user->name }}">
                                                     @else
                                                         <div class="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-500 font-bold mr-3">
                                                             {{ substr($application->user->name, 0, 1) }}

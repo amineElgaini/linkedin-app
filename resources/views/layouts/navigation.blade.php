@@ -106,7 +106,8 @@
                                 src="{{ Auth::user()->profile_photo 
         ? asset('storage/' . Auth::user()->profile_photo) 
         : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=3B82F6&color=fff' }}"
-                                alt="{{ Auth::user()->name }}">
+                                alt="{{ Auth::user()->name }}"
+                                class="w-10 h-10 rounded-full object-cover">
 
                             <div class="hidden lg:block text-left">
                                 <div class="text-sm font-medium text-gray-900">{{ Str::limit(Auth::user()->name, 15) }}</div>
@@ -255,7 +256,7 @@
         : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) 
     }}"
                     alt="{{ Auth::user()->name }}"
-                    class="w-10 h-10 rounded-full">
+                    class="w-10 h-10 rounded-full object-cover">
 
                 <div>
                     <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
